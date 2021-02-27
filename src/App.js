@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Container, Grid } from 'semantic-ui-react';
+
+import CardExampleCard from './CardExample';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid>
+      <Grid.Column floated="left" width={8}>
+        <Container>
+          <CardExampleCard />
+        </Container>
+      </Grid.Column>
+      <Grid.Column floated="right" width={8}>
+        <Container>
+          <CardExampleCard />
+        </Container>
+      </Grid.Column>
+    </Grid>
   );
 }
 
