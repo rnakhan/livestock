@@ -1,22 +1,15 @@
-import React from 'react';
-import { Container, Grid } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Container } from 'semantic-ui-react';
 
-import CardExampleCard from './CardExample';
+import SymbolSearch from './SymbolSearch';
 
 function App() {
+  const [symbol, setSymbol] = useState('');
   return (
-    <Grid>
-      <Grid.Column floated="left" width={8}>
-        <Container>
-          <CardExampleCard />
-        </Container>
-      </Grid.Column>
-      <Grid.Column floated="right" width={8}>
-        <Container>
-          <CardExampleCard />
-        </Container>
-      </Grid.Column>
-    </Grid>
+    <Container>
+      <SymbolSearch setSymbol={setSymbol} />
+      <div>{symbol}</div>
+    </Container>
   );
 }
 
