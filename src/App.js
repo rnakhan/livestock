@@ -13,7 +13,7 @@ function App() {
           <SymbolSearch setSymbol={setSymbol} />
         </Grid.Column>
         <Grid.Row>
-          <Grid.Column>
+          <Grid.Column width={15}>
             <StockList />
           </Grid.Column>
         </Grid.Row>
