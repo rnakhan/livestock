@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
-import { Container } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 import SymbolSearch from './SymbolSearch';
+import StockList from './StockList';
 
 function App() {
   const [symbol, setSymbol] = useState('');
   return (
-    <Container>
-      <SymbolSearch setSymbol={setSymbol} />
-      <div>{symbol}</div>
-    </Container>
+    <div style={{ marginTop: 10 }}>
+      <Grid centered container columns={1}>
+        <Grid.Column width={10}>
+          <SymbolSearch setSymbol={setSymbol} />
+        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width={14}>
+            <StockList />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </div>
   );
 }
 
