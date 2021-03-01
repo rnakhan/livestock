@@ -19,21 +19,21 @@ const StockList = () => (
           <span style={{ fontSize: 8 }}>Alphabet Inc.</span>
         </Grid.Column>
         <Grid.Column width={4}>
-          <Label color="red" size="tiny" horizontal>
+          <Label basic color="red" size="tiny" horizontal>
             -7.5%
           </Label>
           <br />
-          <span style={{ fontSize: 8 }}>146 - 212</span>
+          <span style={{ fontSize: 8 }}>146.25 - 212.42</span>
         </Grid.Column>
         <Grid.Column width={4} textAlign="center">
-          189
+          189.28
         </Grid.Column>
         <Grid.Column width={4}>
           <Label color="green" horizontal size="small">
             1.2%
           </Label>
           <br />
-          <span style={{ fontSize: 8 }}>180 - 200</span>
+          <span style={{ fontSize: 8 }}>180.45 - 200.11</span>
         </Grid.Column>
       </Grid>
     </List.Item>
@@ -45,21 +45,21 @@ const StockList = () => (
           <span style={{ fontSize: 8 }}>Alphabet Inc.</span>
         </Grid.Column>
         <Grid.Column width={4}>
-          <Label color="red" size="tiny" horizontal>
+          <Label basic color="red" size="tiny" horizontal>
             -3.5%
           </Label>
           <br />
-          <span style={{ fontSize: 8 }}>2200 - 1500</span>
+          <span style={{ fontSize: 8 }}>2200.21 - 1500.34</span>
         </Grid.Column>
         <Grid.Column width={4} textAlign="center">
-          2100
+          2100.75
         </Grid.Column>
         <Grid.Column width={4}>
           <Label color="green" horizontal size="small">
             2.2%
           </Label>
           <br />
-          <span style={{ fontSize: 8 }}>2107 - 2059</span>
+          <span style={{ fontSize: 8 }}>2107.33 - 2059.86</span>
         </Grid.Column>
       </Grid>
     </List.Item>
