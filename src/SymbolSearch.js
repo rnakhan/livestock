@@ -82,7 +82,7 @@ export default class SymbolSearch extends Component {
           icon: 'search',
           iconPosition: 'left',
           placeholder: 'Search symbols..',
-          fluid: 'true',
+          fluid: true,
         }}
         loading={isLoading}
         onResultSelect={this.handleResultSelect}

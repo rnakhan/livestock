@@ -1,7 +1,42 @@
 import React from 'react';
-import { List, Label, Grid, GridColumn } from 'semantic-ui-react';
+import { List, Label, Grid } from 'semantic-ui-react';
 
-const StockList = () => (
+const formatListItems = (data) => {
+  return data.map((e, i) => {
+    return (
+      <List.Item key={i}>
+        <Grid verticalAlign="middle" textAlign="center" columns={4}>
+          <Grid.Column width={4}>
+            {e.symbol} <br />
+            <span style={{ fontSize: 8 }}>{e.description}</span>
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <Label basic color="red" size="tiny" horizontal>
+              {e.delta52}
+            </Label>
+            <br />
+            <span style={{ fontSize: 8 }}>
+              {e.h52} - {e.l52}
+            </span>
+          </Grid.Column>
+          <Grid.Column width={4} textAlign="center">
+            {e.price}
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <Label color="green" horizontal size="small">
+              {e.todayDelta}
+            </Label>
+            <br />
+            <span style={{ fontSize: 8 }}>
+              {e.todayH} - {e.todayL}
+            </span>
+          </Grid.Column>
+        </Grid>
+      </List.Item>
+    );
+  });
+};
+const StockList = (props) => (
   <List divided relaxed verticalAlign="middle">
     <List.Item>
       <Grid verticalAlign="middle" textAlign="center" columns={4}>
@@ -12,57 +47,7 @@ const StockList = () => (
       </Grid>
     </List.Item>
 
-    <List.Item>
-      <Grid verticalAlign="middle" textAlign="center" columns={4}>
-        <Grid.Column width={4}>
-          AAPL <br />
-          <span style={{ fontSize: 8 }}>Alphabet Inc.</span>
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Label basic color="red" size="tiny" horizontal>
-            -7.5%
-          </Label>
-          <br />
-          <span style={{ fontSize: 8 }}>146.25 - 212.42</span>
-        </Grid.Column>
-        <Grid.Column width={4} textAlign="center">
-          189.28
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Label color="green" horizontal size="small">
-            1.2%
-          </Label>
-          <br />
-          <span style={{ fontSize: 8 }}>180.45 - 200.11</span>
-        </Grid.Column>
-      </Grid>
-    </List.Item>
-
-    <List.Item>
-      <Grid verticalAlign="middle" textAlign="center" columns={4}>
-        <Grid.Column width={4}>
-          GOOG <br />
-          <span style={{ fontSize: 8 }}>Alphabet Inc.</span>
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Label basic color="red" size="tiny" horizontal>
-            -3.5%
-          </Label>
-          <br />
-          <span style={{ fontSize: 8 }}>2200.21 - 1500.34</span>
-        </Grid.Column>
-        <Grid.Column width={4} textAlign="center">
-          2100.75
-        </Grid.Column>
-        <Grid.Column width={4}>
-          <Label color="green" horizontal size="small">
-            2.2%
-          </Label>
-          <br />
-          <span style={{ fontSize: 8 }}>2107.33 - 2059.86</span>
-        </Grid.Column>
-      </Grid>
-    </List.Item>
+    {formatListItems(props.data)}
   </List>
 );
 
