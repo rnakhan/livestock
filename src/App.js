@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Grid, Button } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import { Grid, Button, Modal } from 'semantic-ui-react';
 
 import SymbolSearch from './SymbolSearch';
 import StockList from './StockList';
@@ -31,6 +31,24 @@ const data = [
 
 function App() {
   const [symbol, setSymbol] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  // in reality, add and remove the security and trigger a data refresh
+  const [deleteSymbol, setDeleteSymbol] = useState(null);
+  const [stockData, setStockData] = useState(data);
+
+  useEffect(() => console.log(stockData), [stockData]);
+
+  const removeSymbol = (symbol) => {
+    setDeleteSymbol(symbol);
+    setModalOpen(true);
+  };
+
+  const finallyDelete = () => {
+    console.log(stockData);
+    setStockData(stockData.filter((e) => e.symbol != deleteSymbol));
+    //setDeleteSymbol(null);
+  };
+
   return (
     <div style={{ marginTop: 10 }}>
       <Grid centered container columns={2}>
@@ -48,10 +66,30 @@ function App() {
         </Grid.Column>
         <Grid.Row>
           <Grid.Column width={15}>
-            <StockList data={data} />
+            <StockList data={stockData} removeSymbol={removeSymbol} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
+      <Modal closeOnEscape={true} closeOnDimmerClick={true} open={modalOpen}>
+        <Modal.Header>Stop tracking this?</Modal.Header>
+        <Modal.Content>
+          <p>Are you sure you want to stop tracking {deleteSymbol}?</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setModalOpen(false)} negative>
+            No
+          </Button>
+          <Button
+            onClick={() => {
+              setModalOpen(false);
+              finallyDelete();
+            }}
+            positive
+          >
+            Yes
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </div>
   );
 }
