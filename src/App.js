@@ -3,6 +3,7 @@ import { Grid, Button, Modal } from 'semantic-ui-react';
 
 import SymbolSearch from './SymbolSearch';
 import StockList from './StockList';
+import { getQuote } from './finnhub/QueryFinnHub';
 
 const data = [
   {
@@ -32,21 +33,20 @@ const data = [
 function App() {
   const [symbol, setSymbol] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  // in reality, add and remove the security and trigger a data refresh
-  const [deleteSymbol, setDeleteSymbol] = useState(null);
+  // in reality, add and remove the symbol and trigger a data refresh
+  const [symbolToRemove, setSymbolToRemove] = useState(null);
   const [stockData, setStockData] = useState(data);
 
   useEffect(() => console.log(stockData), [stockData]);
 
   const removeSymbol = (symbol) => {
-    setDeleteSymbol(symbol);
+    setSymbolToRemove(symbol);
     setModalOpen(true);
   };
 
   const finallyDelete = () => {
-    console.log(stockData);
-    setStockData(stockData.filter((e) => e.symbol != deleteSymbol));
-    //setDeleteSymbol(null);
+    setStockData(stockData.filter((e) => e.symbol != symbolToRemove));
+    setSymbolToRemove(null);
   };
 
   return (
@@ -59,9 +59,9 @@ function App() {
           <Button
             icon="refresh"
             circular
-            color="teal"
+            color="blue"
             size="small"
-            onClick={() => console.log('refersh clicked')}
+            onClick={() => getQuote()}
           />
         </Grid.Column>
         <Grid.Row>
@@ -73,7 +73,7 @@ function App() {
       <Modal closeOnEscape={true} closeOnDimmerClick={true} open={modalOpen}>
         <Modal.Header>Stop tracking this?</Modal.Header>
         <Modal.Content>
-          <p>Are you sure you want to stop tracking {deleteSymbol}?</p>
+          <p>Are you sure you want to stop tracking {symbolToRemove}?</p>
         </Modal.Content>
         <Modal.Actions>
           <Button onClick={() => setModalOpen(false)} negative>

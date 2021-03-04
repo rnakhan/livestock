@@ -1,13 +1,13 @@
 import React from 'react';
 import { List, Label, Grid } from 'semantic-ui-react';
 
-import useLongPress from './common/LongPressHook';
+import longPressEvents from './common/LongPressEvents';
 
 const formatListItems = (data, removeSymbol) => {
   return data.map((e, i) => {
     return (
       <List.Item key={i}>
-        <div {...useLongPress(() => removeSymbol(e.symbol), 300)}>
+        <div {...longPressEvents((i) => removeSymbol(e.symbol), 300)}>
           <Grid verticalAlign="middle" textAlign="center" columns={4}>
             <Grid.Column width={4}>
               {e.symbol} <br />
@@ -40,19 +40,21 @@ const formatListItems = (data, removeSymbol) => {
     );
   });
 };
-const StockList = (props) => (
-  <List divided relaxed verticalAlign="middle">
-    <List.Item>
-      <Grid verticalAlign="middle" textAlign="center" columns={4}>
-        <Grid.Column>Symbol</Grid.Column>
-        <Grid.Column>52W</Grid.Column>
-        <Grid.Column>Price</Grid.Column>
-        <Grid.Column>Today</Grid.Column>
-      </Grid>
-    </List.Item>
+const StockList = (props) => {
+  return (
+    <List divided relaxed verticalAlign="middle">
+      <List.Item>
+        <Grid verticalAlign="middle" textAlign="center" columns={4}>
+          <Grid.Column>Symbol</Grid.Column>
+          <Grid.Column>52W</Grid.Column>
+          <Grid.Column>Price</Grid.Column>
+          <Grid.Column>Today</Grid.Column>
+        </Grid>
+      </List.Item>
 
-    {formatListItems(props.data, props.removeSymbol)}
-  </List>
-);
+      {formatListItems(props.data, props.removeSymbol)}
+    </List>
+  );
+};
 
 export default StockList;
