@@ -1,6 +1,8 @@
 import React from 'react';
 import { List, Label, Grid } from 'semantic-ui-react';
 
+import { formatDate } from './common/Utils';
+
 import longPressEvents from './common/LongPressEvents';
 
 const formatListItems = (data, removeSymbol) => {
@@ -20,6 +22,11 @@ const formatListItems = (data, removeSymbol) => {
               <br />
               <span style={{ fontSize: 8 }}>
                 {e.h52} - {e.l52}
+              </span>
+              <br />
+              <span style={{ fontSize: 8 }}>
+                {formatDate(e.hdt52, 'MMM-dd')} -{' '}
+                {formatDate(e.ldt52, 'MMM-dd')}
               </span>
             </Grid.Column>
             <Grid.Column width={4} textAlign="center">

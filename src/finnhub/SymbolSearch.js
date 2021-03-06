@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Search } from 'semantic-ui-react';
 
-import { finnhubClient, FINN_HUB_KEY } from './finnhub/FinnHubClient';
+import { finnhubClient, FINN_HUB_KEY } from './FinnHubClient';
 
 /*
   [{

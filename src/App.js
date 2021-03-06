@@ -1,43 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Grid, Button, Modal } from 'semantic-ui-react';
 
-import SymbolSearch from './SymbolSearch';
+import SymbolSearch from './finnhub/SymbolSearch';
 import StockList from './StockList';
 import { getQuote } from './finnhub/QueryFinnHub';
-
-const data = [
-  {
-    symbol: 'AAPL',
-    description: 'Apple Inc',
-    delta52: '-7.52%',
-    h52: '146.25',
-    l52: '212.42',
-    price: '189.39',
-    todayDelta: '1.2%',
-    todayH: '180.45',
-    todayL: '200.11',
-  },
-  {
-    symbol: 'GOOG',
-    description: 'Alphabet Inc',
-    delta52: '-2.52%',
-    h52: '2246.25',
-    l52: '2122.42',
-    price: '2189.28',
-    todayDelta: '3.2%',
-    todayH: '2200.45',
-    todayL: '2175.99',
-  },
-];
 
 function App() {
   const [symbol, setSymbol] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   // in reality, add and remove the symbol and trigger a data refresh
   const [symbolToRemove, setSymbolToRemove] = useState(null);
-  const [stockData, setStockData] = useState(data);
 
-  useEffect(() => console.log(stockData), [stockData]);
+  const initialData = [
+    {
+      symbol: 'AAPL',
+      description: 'Apple Inc',
+      delta52: '-7.52%',
+      h52: '212.25',
+      hdt52: '2021-01-25',
+      l52: '142.42',
+      ldt52: '2020-03-31',
+      price: '189.39',
+      todayDelta: '1.2%',
+      todayH: '180.45',
+      todayL: '200.11',
+    },
+    {
+      symbol: 'GOOG',
+      description: 'Alphabet Inc',
+      delta52: '-2.52%',
+      h52: '2246.25',
+      hdt52: '2021-01-25',
+      l52: '2122.42',
+      ldt52: '2020-03-31',
+      price: '2189.28',
+      todayDelta: '3.2%',
+      todayH: '2200.45',
+      todayL: '2175.99',
+    },
+  ];
+
+  const stockDataReducer = (state, action) => {
+    switch (action.type) {
+      case 'FINALLY_DELETE':
+        return state.filter((e) => e.symbol !== symbolToRemove);
+      case 'UPDATE_QUOTE':
+        return state.map((stock) => {
+          if (stock.symbol === action.updatedQuote.symbol) {
+            return { ...stock, ...action.updatedQuote };
+          } else {
+            return stock;
+          }
+        });
+      default:
+        return state;
+    }
+  };
+
+  const [data, dispatch] = useReducer(stockDataReducer, initialData);
 
   const removeSymbol = (symbol) => {
     setSymbolToRemove(symbol);
@@ -45,8 +65,14 @@ function App() {
   };
 
   const finallyDelete = () => {
-    setStockData(stockData.filter((e) => e.symbol != symbolToRemove));
-    setSymbolToRemove(null);
+    dispatch({ type: 'FINALLY_DELETE' });
+  };
+
+  const refreshQuotes = () => {
+    dispatch({
+      type: 'UPDATE_QUOTE',
+      updatedQuote: { symbol: 'GOOG', price: '2211.22' },
+    });
   };
 
   return (
@@ -61,12 +87,12 @@ function App() {
             circular
             color="blue"
             size="small"
-            onClick={() => getQuote()}
+            onClick={() => refreshQuotes()}
           />
         </Grid.Column>
         <Grid.Row>
           <Grid.Column width={15}>
-            <StockList data={stockData} removeSymbol={removeSymbol} />
+            <StockList data={data} removeSymbol={removeSymbol} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
