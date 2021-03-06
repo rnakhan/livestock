@@ -1,6 +1,6 @@
 import { finnhubClient } from './FinnHubClient';
 
-const data = [
+/* data format
   {
     symbol: 'AAPL',
     description: 'Apple Inc',
@@ -13,33 +13,34 @@ const data = [
     todayDelta: '1.2%',
     todayH: '180.45',
     todayL: '200.11',
-  },
-  {
-    symbol: 'GOOG',
-    description: 'Alphabet Inc',
-    delta52: '-2.52%',
-    h52: '2246.25',
-    hdt52: '2021-01-25',
-    l52: '2122.42',
-    ldt52: '2020-03-31',
-    price: '2189.28',
-    todayDelta: '3.2%',
-    todayH: '2200.45',
-    todayL: '2175.99',
-  },
-];
+  }
+*/
+
+const printQuote = (symbol) => {
+  getQuote(symbol, console.log);
+};
 
 // https://finnhub.io/docs/api/quote
-const getQuote = (symbol) => {
+const getQuote = async (symbol, handleQuote) => {
   /*
     Quote: {
       c, h, l, o, pc
     }
   */
-  finnhubClient.quote('AAPL', (error, data, response) => {
-    console.log(data);
+  let c;
+  finnhubClient.quote(symbol, (error, data, response) => {
+    const { h, l, pc } = data;
+    c = data.c;
+    handleQuote({
+      symbol: symbol,
+      price: c.toString(),
+      todayDelta: (((pc - c) / pc) * 100).toPrecision(3) + '%',
+      todayH: h,
+      todayL: l,
+    });
   });
 
+  // Now randomly try this in 1 out of 5 attempts
   /*
     BasicFinancials: {
       symbol,
@@ -52,12 +53,24 @@ const getQuote = (symbol) => {
     }
   */
   finnhubClient.companyBasicFinancials(
-    'AAPL',
+    symbol,
     'all',
     (error, data, response) => {
-      console.log(data);
+      const { metric } = data;
+      handleQuote({
+        symbol: symbol,
+        h52: metric['52WeekHigh'].toString(),
+        hdt52: metric['52WeekHighDate'],
+        l52: metric['52WeekLow'].toString(),
+        ldt52: metric['52WeekLowDate'],
+        delta52:
+          (
+            ((c - metric['52WeekHigh']) / metric['52WeekHigh']) *
+            100
+          ).toPrecision(3) + '%',
+      });
     }
   );
 };
 
-export { getQuote };
+export { getQuote, printQuote };

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Search } from 'semantic-ui-react';
 
-import { finnhubClient, FINN_HUB_KEY } from './FinnHubClient';
+import { FINN_HUB_KEY } from './FinnHubClient';
 
 /*
   [{
@@ -19,7 +19,7 @@ export default class SymbolSearch extends Component {
   state = initialState;
 
   handleResultSelect = (e, { result }) => {
-    this.props.setSymbol(result.title);
+    this.props.addSymbol(result);
     return this.setState(initialState);
   };
 
@@ -30,12 +30,10 @@ export default class SymbolSearch extends Component {
       if (this.state.value.length < 1) return this.setState(initialState);
 
       const query = `https://finnhub.io/api/v1/search?q=${this.state.value}&token=${FINN_HUB_KEY}`;
-      console.log(query);
       fetch(query)
         .then((res) => res.json())
         .then(
           (json) => {
-            console.log(json.result);
             this.setState({
               isLoading: false,
               results: json.result.map((e) => {

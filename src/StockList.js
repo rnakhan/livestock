@@ -13,32 +13,42 @@ const formatListItems = (data, removeSymbol) => {
           <Grid verticalAlign="middle" textAlign="center" columns={4}>
             <Grid.Column width={4}>
               {e.symbol} <br />
-              <span style={{ fontSize: 8 }}>{e.description}</span>
+              <span style={{ fontSize: 8 }}>{e.description || ''}</span>
             </Grid.Column>
             <Grid.Column width={4}>
               <Label basic color="red" size="tiny" horizontal>
-                {e.delta52}
+                {e.delta52 || ''}
               </Label>
               <br />
               <span style={{ fontSize: 8 }}>
-                {e.h52} - {e.l52}
+                {e.h52 || ''} - {e.l52 || ''}
               </span>
               <br />
               <span style={{ fontSize: 8 }}>
-                {formatDate(e.hdt52, 'MMM-dd')} -{' '}
-                {formatDate(e.ldt52, 'MMM-dd')}
+                {!!e.hdt52 ? formatDate(e.hdt52, 'MMM-dd') : ''} -{' '}
+                {!!e.ldt52 ? formatDate(e.ldt52, 'MMM-dd') : ''}
               </span>
             </Grid.Column>
             <Grid.Column width={4} textAlign="center">
-              {e.price}
+              {e.price || ''}
             </Grid.Column>
             <Grid.Column width={4}>
-              <Label color="green" horizontal size="small">
-                {e.todayDelta}
+              <Label
+                color={
+                  !!e.todayDelta
+                    ? parseFloat(e.todayDelta) > 0
+                      ? 'green'
+                      : 'red'
+                    : 'blue'
+                }
+                horizontal
+                size="small"
+              >
+                {e.todayDelta || ''}
               </Label>
               <br />
               <span style={{ fontSize: 8 }}>
-                {e.todayH} - {e.todayL}
+                {e.todayH || ''} - {e.todayL || ''}
               </span>
             </Grid.Column>
           </Grid>

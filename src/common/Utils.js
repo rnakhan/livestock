@@ -9,4 +9,8 @@ const formatDate = (dateStr, formatStr) => {
   return format(dtDateOnly, formatStr);
 };
 
-export { formatDate };
+const delay = async (t) => {
+  return new Promise((r) => setTimeout(r, t));
+};
+
+export { formatDate, delay };

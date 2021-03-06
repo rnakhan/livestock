@@ -4,12 +4,12 @@ import { Grid, Button, Modal } from 'semantic-ui-react';
 import SymbolSearch from './finnhub/SymbolSearch';
 import StockList from './StockList';
 import { getQuote } from './finnhub/QueryFinnHub';
+import { delay } from './common/Utils';
 
 function App() {
-  const [symbol, setSymbol] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  // in reality, add and remove the symbol and trigger a data refresh
   const [symbolToRemove, setSymbolToRemove] = useState(null);
+  const [addCounter, setAddCounter] = useState(0);
 
   const initialData = [
     {
@@ -52,12 +52,23 @@ function App() {
             return stock;
           }
         });
+      case 'ADD_SYMBOL':
+        setAddCounter(addCounter + 1);
+        return [...state, action.newSymbol];
       default:
         return state;
     }
   };
 
   const [data, dispatch] = useReducer(stockDataReducer, initialData);
+
+  //{ title, description }
+  const addSymbol = async (res) => {
+    dispatch({
+      type: 'ADD_SYMBOL',
+      newSymbol: { symbol: res.title, description: res.description },
+    });
+  };
 
   const removeSymbol = (symbol) => {
     setSymbolToRemove(symbol);
@@ -68,18 +79,28 @@ function App() {
     dispatch({ type: 'FINALLY_DELETE' });
   };
 
-  const refreshQuotes = () => {
-    dispatch({
-      type: 'UPDATE_QUOTE',
-      updatedQuote: { symbol: 'GOOG', price: '2211.22' },
-    });
+  const refreshQuotes = async () => {
+    const symbols = data.map((e) => e.symbol);
+    for (let i = 0; i < symbols.length; i++) {
+      getQuote(symbols[i], (quote) => {
+        dispatch({
+          type: 'UPDATE_QUOTE',
+          updatedQuote: quote,
+        });
+      });
+      await delay(1000);
+    }
   };
+
+  useEffect(() => {
+    refreshQuotes();
+  }, [addCounter]);
 
   return (
     <div style={{ marginTop: 10 }}>
       <Grid centered container columns={2}>
         <Grid.Column width={10}>
-          <SymbolSearch setSymbol={setSymbol} />
+          <SymbolSearch addSymbol={addSymbol} />
         </Grid.Column>
         <Grid.Column verticalAlign="middle" floated="right" width={4}>
           <Button
