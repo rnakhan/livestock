@@ -25,14 +25,16 @@ const formatListItems = (data, removeSymbol) => {
               </span>
               <br />
               <span style={{ fontSize: 8 }}>
-                {!!e.hdt52 ? formatDate(e.hdt52, 'MMM-dd') : ''} -{' '}
-                {!!e.ldt52 ? formatDate(e.ldt52, 'MMM-dd') : ''}
+                {!!e.hdt52 ? formatDate(e.hdt52, 'MMM-dd') : 'd'} -{' '}
+                {!!e.ldt52 ? formatDate(e.ldt52, 'MMM-dd') : 'd'}
               </span>
             </Grid.Column>
             <Grid.Column width={4} textAlign="center">
               {e.price || ''}
             </Grid.Column>
             <Grid.Column width={4}>
+              <span style={{ fontSize: 8 }}>{e.pc || ''}</span>
+              <br />
               <Label
                 color={
                   !!e.todayDelta
@@ -65,7 +67,7 @@ const StockList = (props) => {
           <Grid.Column>Symbol</Grid.Column>
           <Grid.Column>52W</Grid.Column>
           <Grid.Column>Price</Grid.Column>
-          <Grid.Column>Today</Grid.Column>
+          <Grid.Column>Stats</Grid.Column>
         </Grid>
       </List.Item>
 

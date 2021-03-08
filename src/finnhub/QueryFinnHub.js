@@ -34,9 +34,10 @@ const getQuote = async (symbol, handleQuote) => {
     handleQuote({
       symbol: symbol,
       price: c.toString(),
-      todayDelta: (((pc - c) / pc) * 100).toPrecision(3) + '%',
+      todayDelta: (((c - pc) / pc) * 100).toPrecision(3) + '%',
       todayH: h,
       todayL: l,
+      pc: pc,
     });
   });
 
@@ -59,15 +60,16 @@ const getQuote = async (symbol, handleQuote) => {
       const { metric } = data;
       handleQuote({
         symbol: symbol,
-        h52: metric['52WeekHigh'].toString(),
+        h52: metric['52WeekHigh'] ? metric['52WeekHigh'].toString() : 'x',
         hdt52: metric['52WeekHighDate'],
-        l52: metric['52WeekLow'].toString(),
+        l52: metric['52WeekLow'] ? metric['52WeekLow'].toString() : 'y',
         ldt52: metric['52WeekLowDate'],
-        delta52:
-          (
-            ((c - metric['52WeekHigh']) / metric['52WeekHigh']) *
-            100
-          ).toPrecision(3) + '%',
+        delta52: metric['52WeekHigh']
+          ? (
+              ((c - metric['52WeekHigh']) / metric['52WeekHigh']) *
+              100
+            ).toPrecision(3) + '%'
+          : '0',
       });
     }
   );
