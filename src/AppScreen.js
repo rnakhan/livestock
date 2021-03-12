@@ -5,10 +5,13 @@ import SymbolSearch from './finnhub/SymbolSearch';
 import StockList from './StockList';
 import { getQuote } from './finnhub/QueryFinnHub';
 import { delay } from './common/Utils';
+import { useAuth } from './hooks/UseAuth';
 
 function AppScreen() {
   const [modalOpen, setModalOpen] = useState(false);
   const [symbolToRemove, setSymbolToRemove] = useState(null);
+
+  const auth = useAuth();
 
   const initialData = [
     {
@@ -82,8 +85,17 @@ function AppScreen() {
     }
   };
 
+  const signOut = () => {
+    auth.signout();
+  };
+
   return (
     <div style={{ marginTop: 10 }}>
+      <div style={{ float: 'right', margin: 10 }}>
+        <Button basic color="red" onClick={signOut}>
+          Signout
+        </Button>
+      </div>
       <Grid centered container columns={2}>
         <Grid.Column width={10}>
           <SymbolSearch addSymbol={addSymbol} />

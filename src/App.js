@@ -31,7 +31,6 @@ export default function App() {
 
 function PrivateRoute({ children, ...rest }) {
   let auth = useAuth();
-  console.log('in private route with user ', auth.getUser());
   return (
     <Route
       {...rest}
