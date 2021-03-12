@@ -57,14 +57,7 @@ function useProvideAuth() {
         // ...
       })
       .catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
+        throw error;
       });
   };
 
@@ -122,9 +115,12 @@ function useProvideAuth() {
     return () => unsubscribe();
   }, []);
 
+  const getUser = () => {
+    return user;
+  };
   // Return the user object and auth methods
   return {
-    user,
+    getUser,
     signin,
     signup,
     signout,
