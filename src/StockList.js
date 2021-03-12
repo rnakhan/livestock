@@ -46,7 +46,7 @@ const formatListItems = (data, removeSymbol) => {
                 horizontal
                 size="small"
               >
-                {e.todayDelta || ''}
+                {e.todayDelta || 'Refresh to Update'}
               </Label>
               <br />
               <span style={{ fontSize: 8 }}>

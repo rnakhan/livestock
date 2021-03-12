@@ -1,17 +1,11 @@
 // https://usehooks.com/useAuth/
 import React, { useState, useEffect, useContext, createContext } from 'react';
+import firebaseCred from '../common/FirebaseCred';
 import firebase from 'firebase/app';
 require('firebase/auth');
 
 // Add your Firebase credentials
-firebase.initializeApp({
-  apiKey: 'AIzaSyA40gICjqFHpnz31mqLWPfkqEglRrtmy4I',
-  authDomain: 'livestock-c9ef6.firebaseapp.com',
-  projectId: 'livestock-c9ef6',
-  storageBucket: 'livestock-c9ef6.appspot.com',
-  messagingSenderId: '519590207669',
-  appId: '1:519590207669:web:d1fb13bcc9d7e4dbfe9efc',
-});
+firebase.initializeApp(firebaseCred);
 
 const authContext = createContext();
 
@@ -41,6 +35,36 @@ function useProvideAuth() {
       .then((response) => {
         setUser(response.user);
         return response.user;
+      });
+  };
+
+  const googleSignIn = () => {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        setUser(user);
+        return user;
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
       });
   };
 
@@ -106,5 +130,6 @@ function useProvideAuth() {
     signout,
     sendPasswordResetEmail,
     confirmPasswordReset,
+    googleSignIn,
   };
 }

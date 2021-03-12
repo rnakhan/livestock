@@ -14,16 +14,6 @@ function AppScreen() {
     {
       symbol: 'AAPL',
       description: 'Apple Inc',
-      delta52: '-7.52%',
-      h52: '212.25',
-      hdt52: '2021-01-25',
-      l52: '142.42',
-      ldt52: '2020-03-31',
-      price: '189.39',
-      todayDelta: '1.2%',
-      todayH: '180.45',
-      todayL: '200.11',
-      pc: '193',
     },
     {
       symbol: 'GOOG',

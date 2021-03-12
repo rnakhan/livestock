@@ -17,12 +17,12 @@ export default function App() {
     <ProvideAuth>
       <Router>
         <Switch>
-          <PrivateRoute path="/app">
-            <AppScreen />
-          </PrivateRoute>
           <Route path="/login">
             <LoginPage />
           </Route>
+          <PrivateRoute path="/">
+            <AppScreen />
+          </PrivateRoute>
         </Switch>
       </Router>
     </ProvideAuth>
@@ -51,9 +51,22 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 function LoginPage() {
+  let history = useHistory();
+  let location = useLocation();
+  let auth = useAuth();
+
+  let { from } = location.state || { from: { pathname: '/' } };
+  let login = () => {
+    auth.googleSignIn().then(() => {
+      console.log('calling history replace');
+      history.replace(from);
+    });
+  };
+
   return (
     <div>
-      <p> Hello </p>
+      <p>You must log in to view the page at {from.pathname}</p>
+      <button onClick={login}>Log in</button>
     </div>
   );
 }
