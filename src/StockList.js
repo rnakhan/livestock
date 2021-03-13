@@ -1,11 +1,11 @@
 import React from 'react';
-import { List, Label, Grid } from 'semantic-ui-react';
+import { List, Label, Grid, Button } from 'semantic-ui-react';
 
 import { formatDate } from './common/Utils';
 
 import longPressEvents from './common/LongPressEvents';
 
-const formatListItems = (data, removeSymbol) => {
+const formatListItems = (data, removeSymbol, refreshQuotes) => {
   return data.map((e, i) => {
     return (
       <List.Item key={i}>
@@ -35,19 +35,24 @@ const formatListItems = (data, removeSymbol) => {
             <Grid.Column width={4}>
               <span style={{ fontSize: 8 }}>{e.pc || ''}</span>
               <br />
-              <Label
-                color={
-                  !!e.todayDelta
-                    ? parseFloat(e.todayDelta) > 0
-                      ? 'green'
-                      : 'red'
-                    : 'blue'
-                }
-                horizontal
-                size="small"
-              >
-                {e.todayDelta || 'Refresh to Update'}
-              </Label>
+              {!!e.todayDelta ? (
+                <Label
+                  color={parseFloat(e.todayDelta) > 0 ? 'green' : 'red'}
+                  horizontal
+                  size="small"
+                >
+                  {e.todayDelta || 'Refresh to Update'}
+                </Label>
+              ) : (
+                <Button
+                  basic
+                  color="blue"
+                  content="Refresh"
+                  onClick={refreshQuotes}
+                  size="small"
+                />
+              )}
+
               <br />
               <span style={{ fontSize: 8 }}>
                 {e.todayH || ''} - {e.todayL || ''}
@@ -71,7 +76,7 @@ const StockList = (props) => {
         </Grid>
       </List.Item>
 
-      {formatListItems(props.data, props.removeSymbol)}
+      {formatListItems(props.data, props.removeSymbol, props.refreshQuotes)}
     </List>
   );
 };

@@ -58,7 +58,6 @@ function LoginPage() {
   let { from } = location.state || { from: { pathname: '/' } };
   let login = () => {
     auth.googleSignIn().then(() => {
-      console.log('calling history replace');
       history.replace(from);
     });
   };

@@ -1,11 +1,6 @@
 // https://usehooks.com/useAuth/
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import firebaseCred from '../common/FirebaseCred';
-import firebase from 'firebase/app';
-require('firebase/auth');
-
-// Add your Firebase credentials
-firebase.initializeApp(firebaseCred);
+import { firebase } from '../common/firebase';
 
 const authContext = createContext();
 
@@ -44,12 +39,12 @@ function useProvideAuth() {
   }, []);
 
   const getUser = () => {
-    return localStorage.getItem('authenticatedUser');
+    return JSON.parse(localStorage.getItem('authenticatedUser'));
   };
 
   const setUser = (user) => {
     if (user != null) {
-      localStorage.setItem('authenticatedUser', user);
+      localStorage.setItem('authenticatedUser', JSON.stringify(user));
     } else {
       localStorage.removeItem('authenticatedUser');
     }
@@ -90,12 +85,13 @@ function useProvideAuth() {
       });
   };
 
-  const signout = () => {
+  const signout = (postSignoutFn) => {
     return firebase
       .auth()
       .signOut()
       .then(() => {
         setUser(null);
+        postSignoutFn();
       });
   };
 
