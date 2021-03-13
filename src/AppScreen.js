@@ -12,9 +12,7 @@ import { firestore } from './common/firebase';
 function AppScreen() {
   const [modalOpen, setModalOpen] = useState(false);
   const [symbolToRemove, setSymbolToRemove] = useState(null);
-
   const auth = useAuth();
-
   const history = useHistory();
 
   const stockDataReducer = (state, action) => {
@@ -71,6 +69,10 @@ function AppScreen() {
         });
       });
   }, []);
+
+  useEffect(() => {
+    refreshQuotes();
+  }, [data.length]);
 
   //{ title, description }
   const addSymbol = async (res) => {
