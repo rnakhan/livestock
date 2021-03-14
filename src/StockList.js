@@ -41,11 +41,12 @@ const formatListItems = (data, removeSymbol, refreshQuotes) => {
                   horizontal
                   size="small"
                 >
-                  {e.todayDelta || 'Refresh to Update'}
+                  {e.todayDelta}
                 </Label>
               ) : (
                 <Button
                   basic
+                  loading
                   color="blue"
                   content="Refresh"
                   onClick={refreshQuotes}

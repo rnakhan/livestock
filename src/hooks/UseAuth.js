@@ -1,5 +1,5 @@
 // https://usehooks.com/useAuth/
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useContext, createContext } from 'react';
 import { firebase, firestore } from '../common/firebase';
 
 const authContext = createContext();
@@ -38,12 +38,6 @@ function useProvideAuth() {
       .auth()
       .signInWithPopup(provider)
       .then((result) => {
-        /** @type {firebase.auth.OAuthCredential} */
-        var credential = result.credential;
-
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = credential.accessToken;
-        // The signed-in user info.
         var user = result.user;
         return firestore
           .collection('admins')
