@@ -1,6 +1,6 @@
 // https://usehooks.com/useAuth/
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { firebase } from '../common/firebase';
+import { firebase, firestore } from '../common/firebase';
 
 const authContext = createContext();
 
@@ -19,25 +19,6 @@ export const useAuth = () => {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-  // Subscribe to user on mount
-  // Because this sets state in the callback it will cause any ...
-  // ... component that utilizes this hook to re-render with the ...
-  // ... latest auth object.
-  // Also note :
-  // If your effect returns a function, React will run it when it is time to clean up:
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
-
   const getUser = () => {
     return JSON.parse(localStorage.getItem('authenticatedUser'));
   };
@@ -48,18 +29,6 @@ function useProvideAuth() {
     } else {
       localStorage.removeItem('authenticatedUser');
     }
-  };
-
-  // Wrap any Firebase methods we want to use making sure ...
-  // ... to save the user to state.
-  const signin = (email, password) => {
-    return firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        setUser(response.user);
-        return response.user;
-      });
   };
 
   const googleSignIn = () => {
@@ -76,12 +45,21 @@ function useProvideAuth() {
         var token = credential.accessToken;
         // The signed-in user info.
         var user = result.user;
-        setUser(user);
-        return user;
-        // ...
-      })
-      .catch((error) => {
-        throw error;
+        return firestore
+          .collection('admins')
+          .doc(user.email)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              setUser(user);
+              return user;
+            } else {
+              return null;
+            }
+          })
+          .catch((error) => {
+            throw error;
+          });
       });
   };
 
@@ -98,7 +76,6 @@ function useProvideAuth() {
   // Return the user object and auth methods
   return {
     getUser,
-    signin,
     signout,
     googleSignIn,
   };

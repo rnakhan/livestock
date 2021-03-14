@@ -18,6 +18,13 @@ function AppScreen() {
   const stockDataReducer = (state, action) => {
     switch (action.type) {
       case 'FINALLY_DELETE':
+        firestore
+          .collection('userData')
+          .doc(auth.getUser().uid)
+          .collection('symbols')
+          .doc(symbolToRemove)
+          .delete();
+
         return state.filter((e) => e.symbol !== symbolToRemove);
       case 'UPDATE_QUOTE':
         return state.map((stock) => {

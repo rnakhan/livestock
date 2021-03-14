@@ -1,4 +1,5 @@
 import { finnhubClient } from './FinnHubClient';
+import { delay } from '../common/Utils';
 
 /* data format
   {
@@ -53,6 +54,9 @@ const getQuote = async (symbol, handleQuote) => {
       }
     }
   */
+
+  await delay(500);
+
   finnhubClient.companyBasicFinancials(
     symbol,
     'all',
