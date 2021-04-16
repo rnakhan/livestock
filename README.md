@@ -1,6 +1,15 @@
-# Getting Started with Create React App
+# Livestock
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Gives a realtime stock quotes with a change from 52W high. 
+I created this app to know the delta from 52W high which surprisingly no other commercial app gives on first screen.
+
+To use this, create your own FinnHubb account and create a .env file in the root of the project with the following keys
+REACT_APP_FINNHUB_PROD_API_KEY="<your_prod_key>"
+REACT_APP_FINNHUB_SANDBOX_API_KEY="<your_sandbox_key>"
+
+Other than that you may want to create a collection called "admins" and documents with key as the <emaild_id> and value a json with a single field admin: <email_id>
+
+
 
 ## Available Scripts
 
